@@ -9,7 +9,7 @@ var latestResponse;
 var tabularData = "";
 var URL = "index.php?title=Special%3ARandom"
 var period = 10000;
-
+var testDatabase = false;
 
 function getRandomPage ( period ) {
 
@@ -45,30 +45,27 @@ function getRandomPage ( period ) {
 			// 	})
 			// 	.size();
 
-			// var debugJSON = JSON.parse( $( response ).find("#egWiretapDebugInfo").text() );
-			// var databaseTime = 0;
-			// for( var i=0; i<debugJSON.queries.length; i++ ) {
-			// 	// console.log( debugJSON.queries[i].time );
-			// 	databaseTime += debugJSON.queries[i].time;
-			// }
-			// databaseTime = parseInt( databaseTime * 1000 );
-			// countQueries = i + 1;
-			databaseTime = 1;
-			countQueries = 1;
-
-
 			var responseTime = d.getTime() - window.requestStart;
 			window.requestStart = 0;
 
-			// tabularData += timestamp + "\t" + queryTime + "\t" + numQueries + "\n";
-			tabularData += timestamp + "\t" + responseTime + "\t" + databaseTime + "\t" + countQueries + "\n";
+			if ( testDatabase ) {
+				var debugJSON = JSON.parse( $( response ).find("#egWiretapDebugInfo").text() );
+				var databaseTime = 0;
+				for( var i=0; i<debugJSON.queries.length; i++ ) {
+					// console.log( debugJSON.queries[i].time );
+					databaseTime += debugJSON.queries[i].time;
+				}
+				databaseTime = parseInt( databaseTime * 1000 );
+				countQueries = i + 1;
 
-			// console.log(
-			// 	"Title: " + title + "\n" +
-			// 	"Num queries: " + numQueries + "\n" +
-			// 	"Query time: " + queryTime + "ms"
-			// );
-			console.log( responseTime + ": " + databaseTime + " / " + countQueries );
+				tabularData += timestamp + "\t" + responseTime + "\t" + databaseTime + "\t" + countQueries + "\n";
+				console.log( responseTime + ": " + databaseTime + " / " + countQueries );
+
+			} else {
+				tabularData += timestamp + "\t" + responseTime + "\n";
+				console.log( responseTime );
+			}
+
 		}
 	);
 
