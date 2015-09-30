@@ -19,6 +19,8 @@ function getRandomPage ( period ) {
 	}
 
 	var requestStart = (new Date).getTime();
+	var d = new Date();
+	var startTimestamp = d.getUTCHours() + ":" + d.getUTCMinutes() + ":" + d.getUTCSeconds();
 
 	if ( window.stopHitGenerator ) {
 		console.log( "stopHitGenerator set to true; Stopping execution. Restart with getRandomPage(period_in_milliseconds)");
@@ -63,7 +65,7 @@ function getRandomPage ( period ) {
 
 			} else {
 				requestNumber++;
-				tabularData += timestamp + "\t" + responseTime + "\n";
+				tabularData += startTimestamp + "\t" + responseTime + "\n";
 				console.log( "request #" + requestNumber + ": response time = " + responseTime );
 			}
 
