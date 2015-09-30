@@ -10,6 +10,7 @@ var tabularData = "";
 var URL = "index.php?title=Special%3ARandom"
 var period = 10000;
 var testDatabase = false;
+var requestNumber = 0;
 
 function getRandomPage ( period ) {
 
@@ -17,7 +18,7 @@ function getRandomPage ( period ) {
 		window.period = period;
 	}
 
-	window.requestStart = (new Date).getTime();
+	var requestStart = (new Date).getTime();
 
 	if ( window.stopHitGenerator ) {
 		console.log( "stopHitGenerator set to true; Stopping execution. Restart with getRandomPage(period_in_milliseconds)");
@@ -45,8 +46,7 @@ function getRandomPage ( period ) {
 			// 	})
 			// 	.size();
 
-			var responseTime = d.getTime() - window.requestStart;
-			window.requestStart = 0;
+			var responseTime = d.getTime() - requestStart;
 
 			if ( testDatabase ) {
 				var debugJSON = JSON.parse( $( response ).find("#egWiretapDebugInfo").text() );
@@ -62,8 +62,9 @@ function getRandomPage ( period ) {
 				console.log( responseTime + ": " + databaseTime + " / " + countQueries );
 
 			} else {
+				requestNumber++;
 				tabularData += timestamp + "\t" + responseTime + "\n";
-				console.log( responseTime );
+				console.log( "request #" + requestNumber + ": response time = " + responseTime );
 			}
 
 		}
@@ -73,4 +74,4 @@ function getRandomPage ( period ) {
 
 }
 
-getRandomPage( 18000 );
+getRandomPage( 2000 );
